@@ -1,6 +1,4 @@
-defaultExports = {
-  SuccessResponse: require("./SuccessResponse"),
-  ErrorResponse: require("./ErrorResponse"),
-};
+import * as ErrorResponse from "./ErrorResponse.js";
+import * as SuccessResponse from "./SuccessResponse.js";
 
-exports.defaultExports = defaultExports;
+export { SuccessResponse, ErrorResponse };
