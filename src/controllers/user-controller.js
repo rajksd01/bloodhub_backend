@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { User } from "../models/index.js";
 import { tokenSecret } from "../configs/ServerConfigs.js";
+
 // TO CREATE USER
 const createUser = async (req, res) => {
   try {
@@ -27,24 +28,32 @@ async function signIn(req, res) {
   try {
     if (req.body) {
       const user = await User.findOne({ email: req.body.email });
-      if (user) {
-        const isPasswordMatched = await bcrypt.compare(
-          req.body.password,
-          user.password
-        );
-        if (isPasswordMatched) {
-          const token = await jwt.sign(user.name + user.email, tokenSecret);
-          res.status(200).send({
-            user: user,
-            token: token,
-          });
-        }
+      if (!user) {
+        return res.status(400).send({ error: "User not found" });
       }
+      const isPasswordMatched = await bcrypt.compare(
+        req.body.password,
+        user.password
+      );
+      if (!isPasswordMatched) {
+        return res.status(400).send({ error: "Bad Credentials" });
+      }
+
+      const token = await jwt.sign({ data: user._id }, tokenSecret, {
+        expiresIn: "10d",
+      });
+      res.status(200).send({
+        user: user,
+        token: token,
+      });
     }
   } catch (error) {
-    console.log(error)
-    res.status(502).send({ error: "Couldn't Verify User , Bad Credentials" ,error});
+    console.log(error);
+    res.status(502).send({
+      message: "Couldn't Verify User , Bad Credentials",
+      error: error,
+    });
   }
 }
 
-export { createUser,signIn };
+export { createUser, signIn };
