@@ -1,9 +1,10 @@
 import express from "express";
-import { PORT } from "./configs/ServerConfigs.js";
+import config from "./configs/ServerConfigs.js";
 import { getInformation } from "./controllers/index.js";
 import connectionToDB from "./configs/db-config.js";
 import apiRoutes from "./routes/index.js";
 import cors from "cors";
+import logConfig from "./utils/logger.js";
 
 const app = express();
 app.use(
@@ -19,7 +20,10 @@ app.use("/api", apiRoutes);
 
 app.get("/", getInformation);
 
-app.listen(PORT, () => {
+app.listen(config.PORT, () => {
   connectionToDB();
-  console.log(`listening on ${PORT}`);
+  logConfig.log({
+    level: "info",
+    message: `Running on port ${config.PORT} `,
+  });
 });

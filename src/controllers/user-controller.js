@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { User } from "../models/index.js";
-import { tokenSecret } from "../configs/ServerConfigs.js";
+import config from "../configs/ServerConfigs.js";
 
 // TO CREATE USER
 const createUser = async (req, res) => {
@@ -39,7 +39,7 @@ async function signIn(req, res) {
         return res.status(400).send({ error: "Bad Credentials" });
       }
 
-      const token = await jwt.sign({ data: user._id }, tokenSecret, {
+      const token = await jwt.sign({ data: user._id }, config.tokenSecret, {
         expiresIn: "10d",
       });
       res.status(200).send({

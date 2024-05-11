@@ -1,5 +1,7 @@
 import BloodRequest from "../models/bloodRequest-model.js";
 import User from "../models/user-model.js";
+
+// To create blood request
 const createBloodRequest = async (req, res) => {
   try {
     const userId = req.body.userId;
@@ -37,6 +39,8 @@ const createBloodRequest = async (req, res) => {
   }
 };
 
+// to fetch all blood request
+
 const getAllBloodRequest = async (req, res) => {
   try {
     const bloodrequests = await BloodRequest.find();
@@ -51,4 +55,4 @@ const getAllBloodRequest = async (req, res) => {
   }
 };
 
-export { createBloodRequest ,getAllBloodRequest};
+export { createBloodRequest, getAllBloodRequest };

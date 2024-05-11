@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import { SaltRounds } from "../configs/ServerConfigs.js";
+import config from "../configs/ServerConfigs.js";
 
 const userSchema = mongoose.Schema({
   name: {
@@ -30,7 +30,10 @@ const userSchema = mongoose.Schema({
 });
 
 userSchema.pre("save", async function () {
-  const encrypted_password = await bcrypt.hash(this.password, +SaltRounds);
+  const encrypted_password = await bcrypt.hash(
+    this.password,
+    +config.SaltRounds
+  );
   if (encrypted_password.length > 0) {
     this.password = encrypted_password;
   } else {
