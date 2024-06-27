@@ -5,6 +5,7 @@ import connectionToDB from "./configs/db-config.js";
 import apiRoutes from "./routes/index.js";
 import cors from "cors";
 import logConfig from "./utils/logger.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 app.use(
@@ -13,6 +14,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));

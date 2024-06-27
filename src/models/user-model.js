@@ -27,6 +27,14 @@ const userSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
+  refreshToken: {
+    type: String,
+  },
+  role: {
+    type: String,
+    default: "user",
+    ENUM: ["user", "admin", "moderator"],
+  },
 });
 
 userSchema.pre("save", async function () {
