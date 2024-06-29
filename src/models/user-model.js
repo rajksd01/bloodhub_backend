@@ -37,11 +37,8 @@ const userSchema = mongoose.Schema({
   },
 });
 
-userSchema.pre("save", async function () {
-  const encrypted_password = await bcrypt.hash(
-    this.password,
-    +config.SaltRounds
-  );
+userSchema.pre("save", function () {
+  const encrypted_password = bcrypt.hash(this.password, +config.SaltRounds);
   if (encrypted_password.length > 0) {
     this.password = encrypted_password;
   } else {
